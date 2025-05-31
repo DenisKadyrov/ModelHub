@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: modelhub-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: modelhub
+      POSTGRES_PASSWORD: modelhubpass
+      POSTGRES_DB: modelhub_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio:latest
+    container_name: modelhub-minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9003:9000"  # API (S3-compatible)
+      - "9004:9001"  # Web console
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+
+volumes:
+  postgres_data:
+  minio_data:
+
