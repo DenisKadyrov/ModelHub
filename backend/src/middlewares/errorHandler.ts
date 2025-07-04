@@ -1,10 +1,9 @@
-// middlewares/errorHandler.ts
 import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { AppError } from '../utils/errors';
 
 export const errorHandler = (
-  err: unknown,
+  err: Error,
   req: Request,
   res: Response,
   next: NextFunction
@@ -14,10 +13,13 @@ export const errorHandler = (
   }
 
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({ message: err.message });
+    console.log(err.name);
+    return res.status(400).json({ message: err.message});
   }
-
-  console.error('Unexpected error:', err);
-  return res.status(500).json({ message: 'Internal Server Error' });
+  else {
+    console.error('Unexpected error:', err);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+  next();
 };
 
