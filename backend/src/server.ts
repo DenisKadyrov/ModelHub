@@ -1,10 +1,20 @@
 import express from 'express';
-import { swaggerUi, specs } from './swagger'
+import { router } from './routes/users';
+import { swaggerUi, specs } from './swagger';
+import { errorHandler } from './middlewares/errorHandler';
+
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('hello, world');
-});
+app.use(express.json());
+
+app.use('/users', router);
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(specs)
+);
+app.use(errorHandler);
 
 export default app;
