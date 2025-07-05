@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { userRegister } from '../controllers/users';
+import { userLogin, userRegister } from '../controllers/users';
 import { validate } from '../middlewares/validate';
-import { registerSchema } from '../db/schema/users';
+import { authSchema, registerSchema } from '../db/schema/users';
 
 export const router = Router();
 
@@ -65,3 +65,44 @@ export const router = Router();
 *         description: Server error
 */
 router.post('/signup', validate(registerSchema), userRegister);
+/**
+ * @openapi
+ * /users/login:
+ *   post:
+ *     summary: Login with email and password
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 example: securePassword123
+ *     responses:
+ *       200:
+ *         description: Successful login
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: JWT access token
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Invalid credentials
+ */
+router.post('/login', validate(authSchema), userLogin);
