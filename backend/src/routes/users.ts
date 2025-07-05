@@ -7,7 +7,7 @@ export const router = Router();
 
 /**
 * @openapi
-* /users:
+* /users/signup:
 *   post:
 *     summary: Register a new user
 *     tags:
@@ -64,4 +64,4 @@ export const router = Router();
 *       500:
 *         description: Server error
 */
-router.post('/', validate(registerSchema), userRegister);
+router.post('/signup', validate(registerSchema), userRegister);
