@@ -9,6 +9,7 @@ const envSchema = z.object({
   DB_URL: z.string().url({
     message: 'DB_URL must have valid url',
   }),
+  JWT_SECRET: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);
@@ -24,4 +25,5 @@ const env = _env.data
 export const config = {
   PORT: Number(env.PORT),
   DB_URL: env.DB_URL,
+  JWT_SECRET: env.JWT_SECRET,
 }
