@@ -2,7 +2,7 @@ interface FieldProps {
   label: string;
   name: string;
   type: string;
-  autoComplete: string;
+  autoComplete?: string;
   onChange: (value: string) => void;
 }
 const Field: React.FC<FieldProps> = ({ label, name, type, autoComplete, onChange }) => {
