@@ -1,12 +1,13 @@
 import { useState } from "react";
 
 import Field from "./Field"
+import { register } from "../api/users";
 
 interface RegisterFormData {
   name: string;
   email: string;
   password: string;
-}
+};
 
 export default function RegisterForm() {
   const [data, setData] = useState<RegisterFormData>({
@@ -14,13 +15,24 @@ export default function RegisterForm() {
     email: "",
     password: "",
   });
+
   const handleChange = (field: keyof RegisterFormData) => (value: string) => {
     setData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async () => {
+    const res = await register(data);
+    if (res.user) {
+      alert("User is registered");
+    }
   };
   return (
     <>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }} >
           <Field
             label="User name"
             name="name"
@@ -50,7 +62,7 @@ export default function RegisterForm() {
             </button>
           </div>
         </form>
-      </div>
+      </div >
     </>
   )
 }
