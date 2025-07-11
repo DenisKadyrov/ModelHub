@@ -2,14 +2,15 @@ import { z } from 'zod';
 import { Request, Response, NextFunction } from 'express';
 
 export const validate = (schema: z.ZodTypeAny) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const result = schema.safeParse(req.body);
 
     if (!result.success) {
-      return res.status(400).json({
+      res.status(400).json({
         message: 'Validation failed',
         errors: result.error.errors,
       });
+      return;
     }
 
     req.body = result.data;
