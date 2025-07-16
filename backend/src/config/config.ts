@@ -3,6 +3,11 @@ import { z } from 'zod';
 
 dotenv.config();
 
+const boolString = z
+  .string()
+  .transform((val) => val.toLowerCase() === 'true')
+  .pipe(z.boolean());
+
 // Schema for env variables
 const envSchema = z.object({
   PORT: z.string().default('3000'),
@@ -12,7 +17,7 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
   MINIO_ENDPOINT: z.string(),
   MINIO_PORT: z.string().default('9003'),
-  MINIO_USE_SSL: z.string(),
+  MINIO_USE_SSL: boolString.default('false'),
   MINIO_ACCESS_KEY: z.string(),
   MINIO_SECRET_KEY: z.string(),
   BUCKET_NAME: z.string(),
