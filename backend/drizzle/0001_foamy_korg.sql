@@ -1,0 +1,1 @@
+ALTER TABLE "models" ADD COLUMN "path" varchar(1024) NOT NULL;
