@@ -6,6 +6,7 @@ import { signToken } from '../utils/jwt';
 
 export interface UserPayload {
   id: string;
+  name: string;
   email: string;
 }
 
@@ -36,7 +37,11 @@ export async function loginUser(data: {
   const match = await bcrypt.compare(data.password, user.passwordHash);
   if (!match) throw new AppError('Invalid credentials', 401);
 
-  const token = signToken(data);
+  const token = signToken({
+    id: user.id,
+    name: user.name,
+    email: user.email
+  });
   return token;
 }
 
