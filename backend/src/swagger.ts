@@ -15,6 +15,17 @@ const options: swaggerJsdoc.Options = {
         description: 'Local dev sever',
       }
     ],
+    // JWT Authentication configuration
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          description: 'Enter JWT token',
+        },
+      },
+    },
   },
   apis: ['./src/routes/*.ts'],
 };
