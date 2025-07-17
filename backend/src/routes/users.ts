@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { userLogin, userRegister } from '../controllers/users';
 import { validate } from '../middlewares/validate';
 import { authSchema, registerSchema } from '../db/schema/users';
+import { authenticate } from '../middlewares/authenticate';
 
 export const router = Router();
 
@@ -106,3 +107,8 @@ router.post('/signup', validate(registerSchema), userRegister);
  *         description: Invalid credentials
  */
 router.post('/login', validate(authSchema), userLogin);
+
+router.get('/me', authenticate, (req, res) => {
+  const u = req.user;
+  res.json({ u });
+})
