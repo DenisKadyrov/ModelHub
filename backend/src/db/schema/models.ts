@@ -13,3 +13,9 @@ export const modelsTable = pgTable('models', {
   ...timestamps,
 });
 
+export const modelsRelations = relations(modelsTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [modelsTable.userId],
+    references: [usersTable.id],
+  }),
+}));

@@ -1,6 +1,8 @@
+import { Relations } from 'drizzle-orm';
 import { pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 import { z } from 'zod';
 import { timestamps } from '../column.helpers'
+import { modelsTable } from './models';
 
 export const usersTable = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -9,6 +11,10 @@ export const usersTable = pgTable('users', {
   email: varchar('email', { length: 255 }).notNull().unique(),
   ...timestamps,
 });
+
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  models: many(modelsTable),
+}));
 
 export const registerSchema = z.object({
   name: z.string().min(1),
