@@ -1,3 +1,4 @@
+import { eq } from 'drizzle-orm';
 import { db } from '../config/db';
 import { modelsTable } from '../db/schema/models';
 
@@ -14,4 +15,8 @@ export const createModel = async (data: {
 
 export const getListOfModels = async () => {
   return await db.select().from(modelsTable);
+};
+
+export const getOneModel = async (id: number) => {
+  return await db.select().from(modelsTable).where(eq(modelsTable.id, id))
 };

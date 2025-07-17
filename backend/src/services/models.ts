@@ -1,6 +1,6 @@
 import { minioClient } from '../config/minio';
 import { config } from '../config/config';
-import { createModel, getListOfModels } from '../repositories/models';
+import { createModel, getListOfModels, getOneModel } from '../repositories/models';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function uploadModel(data: {
@@ -41,4 +41,9 @@ export async function uploadModel(data: {
 export async function getAllModels() {
   const models = await getListOfModels();
   return models;
-} 
+}
+
+export async function getModelById(id: number) {
+  const [model] = await getOneModel(id);
+  return model;
+}

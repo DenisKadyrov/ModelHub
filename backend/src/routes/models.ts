@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { upload } from '../middlewares/upload';
 import { authenticate } from '../middlewares/authenticate';
-import { handleModelUpload, getModels } from '../controllers/models';
+import { handleModelUpload, getModels, getModel } from '../controllers/models';
 
 export const router = Router();
 
@@ -58,11 +58,32 @@ router.post('/', authenticate, upload.single('file'), handleModelUpload);
  *     tags:
  *       - Models
  *     responses:
- *       '201':
+ *       '200':
  *         description: Sucsessfull 
  *       '400':
  *         description: Missing or invalid fields
- *       '401':
- *         description: Unauthorized
  */
 router.get('/', getModels);
+
+/**
+ * @openapi
+ * /models/{id}:
+ *   get:
+ *     summary: Get model
+ *     description: Get one model by id
+ *     tags:
+ *       - Models
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Model Id 
+ *     responses:
+ *       '200':
+ *         description: Sucsessfull 
+ *       '400':
+ *         description: Missing or invalid fields
+ */
+router.get('/:id', getModel);

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { uploadModel, getAllModels } from '../services/models';
+import { uploadModel, getAllModels, getModelById } from '../services/models';
 
 export const handleModelUpload = async (req: Request, res: Response) => {
   const parsed = req.body;
@@ -20,4 +20,9 @@ export const handleModelUpload = async (req: Request, res: Response) => {
 export const getModels = async (req: Request, res: Response) => {
   const models = await getAllModels();
   res.status(200).json({ models: [models] });
+};
+
+export const getModel = async (req: Request, res: Response) => {
+  const model = await getModelById(parseInt(req.params.id, 10));
+  res.status(200).json({ model: model })
 };
