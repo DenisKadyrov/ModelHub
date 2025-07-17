@@ -1,6 +1,9 @@
 # My docs
 docs
 
+# api test with `curl`
+test
+
 # Data of directories of docker
 postgres_data
 minio_data
