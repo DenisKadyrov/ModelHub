@@ -3,13 +3,13 @@ import { config } from '../config/config';
 import { createModel } from '../repositories/models';
 import { v4 as uuidv4 } from 'uuid';
 
-export const uploadModel = async (data: {
+export async function uploadModel(data: {
   userId: number,
   name: string,
   description: string,
   framework: string,
   file: Express.Multer.File,
-}) => {
+}) {
   const extension = data.file.originalname.split('.').pop();
   const filename = `${uuidv4()}.${extension}`;
   const path = `models/${filename}`;
@@ -37,3 +37,4 @@ export const uploadModel = async (data: {
   });
   return record;
 };
+
