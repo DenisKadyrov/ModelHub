@@ -11,3 +11,7 @@ export const createModel = async (data: {
 }) => {
   return await db.insert(modelsTable).values(data).returning();
 };
+
+export const getListOfModels = async () => {
+  return await db.select().from(modelsTable);
+};

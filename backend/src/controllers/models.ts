@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { uploadModel } from '../services/models';
+import { uploadModel, getAllModels } from '../services/models';
 
 export const handleModelUpload = async (req: Request, res: Response) => {
   const parsed = req.body;
@@ -15,4 +15,9 @@ export const handleModelUpload = async (req: Request, res: Response) => {
     file,
   });
   res.status(201).json({ model });
+};
+
+export const getModels = async (req: Request, res: Response) => {
+  const models = await getAllModels();
+  res.status(200).json({ models: [models] });
 };

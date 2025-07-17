@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { upload } from '../middlewares/upload';
 import { authenticate } from '../middlewares/authenticate';
-import { handleModelUpload } from '../controllers/models';
+import { handleModelUpload, getModels } from '../controllers/models';
 
 export const router = Router();
 
@@ -48,3 +48,21 @@ export const router = Router();
  *         description: Unauthorized
  */
 router.post('/', authenticate, upload.single('file'), handleModelUpload);
+
+/**
+ * @openapi
+ * /models:
+ *   get:
+ *     summary: Get all ML models 
+ *     description: Allows an authenticated user to upload a machine learning model file along with metadata such as name, description, and framework.
+ *     tags:
+ *       - Models
+ *     responses:
+ *       '201':
+ *         description: Sucsessfull 
+ *       '400':
+ *         description: Missing or invalid fields
+ *       '401':
+ *         description: Unauthorized
+ */
+router.get('/', getModels);
