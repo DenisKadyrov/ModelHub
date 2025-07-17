@@ -9,3 +9,10 @@ export const minioClient = new Client({
   secretKey: config.MINIO_SECRET_KEY,
 });
 
+async function initBucket() {
+  if (!(await minioClient.bucketExists(config.MINIO_BUCKET_NAME))) {
+    await minioClient.makeBucket(config.MINIO_BUCKET_NAME)
+  }
+}
+
+initBucket();
