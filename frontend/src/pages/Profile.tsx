@@ -36,6 +36,7 @@ export const Profile: React.FC = () => {
             description: "Description of model",
             tags: ["python", "PyTorch"],
             userId: '4',
+            readme: "text",
             createdAt: "2025-07-18",
             updatedAt: "2025-07-18",
           }

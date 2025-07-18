@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Markdown from 'react-markdown';
 import type { Model, User } from '../types';
 
 export const ModelDetails: React.FC = () => {
@@ -29,6 +30,14 @@ export const ModelDetails: React.FC = () => {
       updatedAt: '2024-07-10T15:30:00Z',
       fileSize: 10485760, // 10MB
       downloadCount: 42,
+      readme: `**Usage**1
+Run the model with: *hello*
+\`\`\`bash
+python run.py --model path/to/model.pt
+\`\`\`
+## Description
+This model classifies text into categories: \`spam\`, \`ham\`, etc.
+      `
     };
 
     setModel(fakeModel);
@@ -113,6 +122,15 @@ export const ModelDetails: React.FC = () => {
           </button>
         </div>
       )}
+      {model.readme && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">README</h2>
+          <div className="prose prose-sm sm:prose md:prose-lg max-w-none bg-gray-50 p-6 rounded-md border border-gray-200">
+            <Markdown>{model.readme}</Markdown>
+          </div>
+        </section>
+      )}
     </div>
+
   );
 };
