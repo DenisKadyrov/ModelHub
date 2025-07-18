@@ -16,6 +16,7 @@ export interface Model {
   updatedAt: string;
   fileSize?: number;
   downloadCount?: number;
+  readme: string;
 }
 
 export interface ProfileData {
