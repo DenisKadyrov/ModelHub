@@ -5,7 +5,7 @@ import { usersTable } from './users';
 
 export const modelsTable = pgTable('models', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').references(() => usersTable.id),
+  userId: integer('user_id').references(() => usersTable.id).notNull(),
   name: varchar('name', { length: 255 }).notNull(),
   path: varchar('path', { length: 1024 }).notNull(),
   description: varchar('description', { length: 600 }).notNull(),
