@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { uploadModel, getAllModels, getModelById } from '../services/models';
+import { uploadModel, getAllModels, getModelById, deleteModelById } from '../services/models';
 
 export const handleModelUpload = async (req: Request, res: Response) => {
   const parsed = req.body;
@@ -25,4 +25,9 @@ export const getModels = async (req: Request, res: Response) => {
 export const getModel = async (req: Request, res: Response) => {
   const model = await getModelById(parseInt(req.params.id, 10));
   res.status(200).json({ model: model })
+};
+
+export const deleteModel = async (req: Request, res: Response) => {
+  const deleteRes = await deleteModelById(parseInt(req.params.id, 10));
+  res.status(200).json(deleteRes);
 };

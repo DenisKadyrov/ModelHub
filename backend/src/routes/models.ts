@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { upload } from '../middlewares/upload';
 import { authenticate } from '../middlewares/authenticate';
-import { handleModelUpload, getModels, getModel } from '../controllers/models';
+import { handleModelUpload, getModels, getModel, deleteModel } from '../controllers/models';
 
 export const router = Router();
 
@@ -87,3 +87,26 @@ router.get('/', getModels);
  *         description: Missing or invalid fields
  */
 router.get('/:id', getModel);
+
+/**
+ * @openapi
+ * /models/{id}:
+ *   delete:
+ *     summary: Del model
+ *     description: Delete one model by id
+ *     tags:
+ *       - Models
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Model Id 
+ *     responses:
+ *       '200':
+ *         description: Sucsessfull 
+ *       '400':
+ *         description: Missing or invalid fields
+ */
+router.delete('/:id', deleteModel);

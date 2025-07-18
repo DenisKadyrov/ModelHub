@@ -20,3 +20,7 @@ export const getListOfModels = async () => {
 export const getOneModel = async (id: number) => {
   return await db.select().from(modelsTable).where(eq(modelsTable.id, id))
 };
+
+export const deleteOneModel = async (id: number) => {
+  return await db.delete(modelsTable).where(eq(modelsTable.id, id));
+}
