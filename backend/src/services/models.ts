@@ -54,10 +54,22 @@ export async function getModelById(id: number): Promise<ModelResponse> {
   return toModelResponse(model);
 }
 
-export async function deleteModelById(id: number) {
-  const res = await deleteOneModel(id);
-  return res;
+export async function deleteModelById(id: number): Promise<{ message: string }> {
+  const model = await getOneModel(id);
+
+  await deleteOneModel(id);
+
+  // Then delete file from MinIO
+  try {
+    await minioClient.removeObject(config.MINIO_BUCKET_NAME, model.path);
+  } catch (error) {
+    console.error('Failed to delete file from MinIO:', error);
+    // Don't throw here as the database record is already deleted
+  }
+
+  return { message: 'Model deleted successfully' };
 }
+
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
