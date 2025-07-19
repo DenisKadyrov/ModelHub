@@ -4,6 +4,7 @@ import { tokenVerify } from '../utils/jwt';
 import { UserPayload } from '../services/users';
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
+  // const token = req.cookies['authcookie'];
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) throw new AppError("Unauthorized", 401);

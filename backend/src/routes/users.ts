@@ -66,46 +66,72 @@ export const router = Router();
 *         description: Server error
 */
 router.post('/signup', validate(registerSchema), userRegister);
+
 /**
- * @openapi
- * /users/login:
- *   post:
- *     summary: Login with email and password
- *     tags:
- *       - Auth
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 example: user@example.com
- *               password:
- *                 type: string
- *                 example: securePassword123
- *     responses:
- *       200:
- *         description: Successful login
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                   description: JWT access token
- *       400:
- *         description: Validation error
- *       401:
- *         description: Invalid credentials
- */
+* @openapi
+* /users/login:
+*   post:
+*     summary: Login with email and password
+*     tags:
+*       - Auth
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             required:
+*               - email
+*               - password
+*             properties:
+*               email:
+*                 type: string
+*                 format: email
+*                 example: user@example.com
+*               password:
+*                 type: string
+*                 example: securePassword123
+*     responses:
+*       200:
+*         description: Successful login
+*         headers:
+*           Set-Cookie:
+*             description: JWT token in httpOnly cookie
+*             schema:
+*               type: string
+*               example: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly; Secure; SameSite=Strict; Max-Age=86400"
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 success:
+*                   type: boolean
+*                   example: true
+*                 message:
+*                   type: string
+*                   example: "Logged in successfully"
+*       400:
+*         description: Validation error
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 error:
+*                   type: string
+*                   example: "Validation failed"
+*       401:
+*         description: Invalid credentials
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 error:
+*                   type: string
+*                   example: "Invalid email or password"
+*/
 router.post('/login', validate(authSchema), userLogin);
 
 router.get('/me', authenticate, (req, res) => {

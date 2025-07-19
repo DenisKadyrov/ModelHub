@@ -12,6 +12,11 @@ export const userRegister = async (req: Request, res: Response) => {
 
 export const userLogin = async (req: Request, res: Response) => {
   const parsed = req.body;
-  const user = await loginUser(parsed);
-  res.status(200).json(user);
+  const token = await loginUser(parsed);
+  res.cookie('authcookie', token, { maxAge: 900000, httpOnly: true })
+  res.status(200).json({
+    success: true,
+    token: token, // just for test
+    message: 'Logged in successfully',
+  });
 }

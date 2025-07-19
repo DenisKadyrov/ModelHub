@@ -18,6 +18,11 @@ const options: swaggerJsdoc.Options = {
     // JWT Authentication configuration
     components: {
       securitySchemes: {
+        cookieAuth: {
+          type: 'apiKey',
+          in: 'cookie',
+          name: 'token'
+        },
         BearerAuth: {
           type: 'http',
           scheme: 'bearer',
