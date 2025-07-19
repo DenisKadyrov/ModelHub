@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+
 import { FileUpload } from './FileUpload.tsx';
 import { ReadmeEditor } from './ReadmeEditor.tsx';
-import type { ModelUploadData } from '../types';
+import type { ModelUploadData } from '../types/models.ts';
+
 
 interface ModelUploadFormProps {
   onSubmit: (data: ModelUploadData) => void;
@@ -12,7 +14,7 @@ interface ModelUploadFormProps {
 export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
   onSubmit,
   onCancel,
-  disabled = false
+  disabled = false,
 }) => {
   const [formData, setFormData] = useState<ModelUploadData>({
     name: '',
@@ -21,7 +23,7 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
     readme: '# Model Name\n\n## Description\n\nDescribe your model here...\n\n## Usage\n\n```python\n# Example usage\n```\n\n## Requirements\n\n- Python 3.8+\n- PyTorch\n\n## License\n\nMIT',
     file: null,
     tags: [],
-    size: 45,
+    size: 2,
   });
 
   const [currentTag, setCurrentTag] = useState('');
@@ -51,15 +53,9 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
     }));
   };
 
-  const handleTagKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddTag();
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     onSubmit(formData);
   };
 
@@ -69,13 +65,13 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
     <form onSubmit={handleSubmit} className="p-6 space-y-6">
       {/* Basic Information */}
       <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Основная информация</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Main info</h2>
 
         <div className="grid grid-cols-1 gap-6">
           {/* Model Name */}
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-              Название модели *
+              Model Name *
             </label>
             <input
               type="text"
@@ -83,7 +79,7 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Введите название модели"
+              placeholder="Enter model name"
               disabled={disabled}
               required
             />
@@ -92,7 +88,7 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
           {/* Description */}
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-              Описание *
+              Description *
             </label>
             <textarea
               id="description"
@@ -100,7 +96,7 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
               value={formData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 resize-vertical"
-              placeholder="Краткое описание модели"
+              placeholder="Short description of model"
               disabled={disabled}
               required
             />
@@ -109,7 +105,7 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
           {/* Tags */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Теги
+              Tags
             </label>
             <div className="flex flex-wrap gap-2 mb-3">
               {formData.tags.map((tag, index) => (
@@ -136,9 +132,8 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
                 type="text"
                 value={currentTag}
                 onChange={(e) => setCurrentTag(e.target.value)}
-                onKeyPress={handleTagKeyPress}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Добавить тег (например: python, pytorch)"
+                placeholder="Add tag (for instance: python, pytorch)"
                 disabled={disabled}
               />
               <button
@@ -147,7 +142,7 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
                 className="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={disabled}
               >
-                Добавить
+                Add
               </button>
             </div>
           </div>
@@ -182,14 +177,14 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
           className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
           disabled={disabled}
         >
-          Отмена
+          Cancal
         </button>
         <button
           type="submit"
           className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           disabled={disabled || !isValid}
         >
-          {disabled ? 'Загрузка...' : 'Загрузить модель'}
+          {disabled ? 'Loading...' : 'Load of model'}
         </button>
       </div>
     </form>
