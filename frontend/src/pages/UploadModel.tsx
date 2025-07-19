@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModelUploadForm } from '../components/ModelUploadForm.tsx';
-import type { ModelUploadData } from '../types';
+import type { ModelUploadData } from '../types/models';
+import { createModel } from '../api/models.ts';
 
 export const ModelUpload: React.FC = () => {
   const navigate = useNavigate();
@@ -26,20 +27,23 @@ export const ModelUpload: React.FC = () => {
         });
       }, 200);
 
-      console.log(data)
+      // add file to form data
+      const formData = new FormData();
+      if (data.file) {
+        formData.append('file', data.file);
+      }
+      formData.append('name', data.name);
+      formData.append('description', data.description);
+      formData.append('framework', data.framework);
+      formData.append('tags', JSON.stringify(data.tags));
+      formData.append('size', data.size.toString());
 
-      // Здесь будет вызов API для загрузки модели в MinIO
-      // const result = await modelsApi.uploadModel(data);
+      await createModel(formData);
 
-      // Симуляция задержки
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      clearInterval(progressInterval);
       setUploadProgress(100);
 
-      // Перенаправление на страницу модели после успешной загрузки
       setTimeout(() => {
-        navigate('/models/new-model-id');
+        navigate('/profile');
       }, 1000);
 
     } catch (err) {
