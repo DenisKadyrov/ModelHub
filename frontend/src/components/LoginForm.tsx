@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Field from "./Field"
 import { login } from "../api/users";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormData {
   email: string;
@@ -9,6 +10,7 @@ interface LoginFormData {
 };
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const [data, setData] = useState<LoginFormData>({
     email: "",
     password: "",
@@ -20,8 +22,8 @@ export default function LoginForm() {
 
   const handleSubmit = async () => {
     const res = await login(data);
-    if (res.token) {
-      alert("User is logined");
+    if (res.success) {
+      navigate('/profile');
     }
   };
   return (
