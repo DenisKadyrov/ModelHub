@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { userLogin, userRegister } from '../controllers/users';
+import { userLogin, userRegister, getUser } from '../controllers/users';
 import { validate } from '../middlewares/validate';
 import { authSchema, registerSchema } from '../db/schema/users';
 import { authenticate } from '../middlewares/authenticate';
@@ -134,7 +134,5 @@ router.post('/signup', validate(registerSchema), userRegister);
 */
 router.post('/login', validate(authSchema), userLogin);
 
-router.get('/me', authenticate, (req, res) => {
-  const u = req.user;
-  res.json({ u });
-})
+
+router.get('/me', authenticate, getUser)

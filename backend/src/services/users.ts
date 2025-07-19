@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 
 import { AppError } from '../utils/errors';
-import { findUserByEmail, createUser } from '../repositories/users';
+import { findUserByEmail, createUser, findUserById } from '../repositories/users';
 import { signToken } from '../utils/jwt';
 
 export interface UserPayload {
@@ -45,3 +45,7 @@ export async function loginUser(data: {
   return token;
 }
 
+export async function getUserInfo(id: number) {
+  const user = await findUserById(id);
+  return user;
+}

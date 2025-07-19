@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { loginUser, registerUser } from '../services/users';
+import { loginUser, registerUser, getUserInfo } from '../services/users';
 
 
 export const userRegister = async (req: Request, res: Response) => {
@@ -19,4 +19,14 @@ export const userLogin = async (req: Request, res: Response) => {
     token: token, // just for test
     message: 'Logged in successfully',
   });
+}
+
+export const getUser = async (req: Request, res: Response) => {
+  const id = req.user?.id;
+  if (!id) {
+    console.log("error");
+    return
+  }
+  const userInfo = await getUserInfo(parseInt(id, 10));
+  res.status(200).json({ userInfo });
 }

@@ -10,7 +10,7 @@ export const modelsTable = pgTable('models', {
   path: varchar('path', { length: 1024 }).notNull(),
   description: varchar('description', { length: 600 }).notNull(),
   framework: varchar('framework', { length: 255 }).notNull(),
-  size: integer('size'),
+  size: integer('size').notNull(),
   readme: text('readme'),
   tags: text('tags').array().notNull().default([]),
   ...timestamps,
