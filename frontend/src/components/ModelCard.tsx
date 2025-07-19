@@ -31,7 +31,7 @@ export const ModelCard: React.FC<ModelCardProps> = ({ model, onModelClick }) => 
           {model.name}
         </h3>
         <div className="text-sm text-gray-500">
-          {formatDate(model.updatedAt)}
+          {formatDate(model.createdAt)}
         </div>
       </div>
 

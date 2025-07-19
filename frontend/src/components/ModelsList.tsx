@@ -1,6 +1,6 @@
 import React from 'react';
-import type { Model } from '../types';
-import { ModelCard } from './ModelCard.tsx';
+import type { Model } from '../types/models';
+import { ModelCard } from './ModelCard';
 
 interface ModelsListProps {
   models: Model[];
@@ -38,20 +38,8 @@ export const ModelsList: React.FC<ModelsListProps> = ({
             </svg>
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            У вас пока нет моделей
+            You haven't models
           </h3>
-          <p className="text-gray-600 mb-4">
-            Загрузите свою первую нейросетевую модель для начала работы
-          </p>
-          <button
-            onClick={onCreateModel}
-            className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            Загрузить модель
-          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
