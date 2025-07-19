@@ -81,6 +81,9 @@ function toModelResponse(model: any): ModelResponse {
     description: model.description,
     framework: model.framework,
     path: model.path,
+    size: model.size,
+    tags: model.tags,
+    readme: model.readme,
     createdAt: model.createdAt.toISOString(),
     updatedAt: model.updatedAt.toISOString()
   };

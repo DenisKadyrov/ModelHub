@@ -12,6 +12,7 @@ export const handleModelUpload = async (req: Request, res: Response) => {
 
   const model = await uploadModel({
     ...parsed,
+    userId: req.user?.id,
     file,
   });
   res.status(201).json({
