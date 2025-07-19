@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface FileUploadProps {
   onFileSelect: (file: File | null) => void;
@@ -15,7 +15,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   const [dragOver, setDragOver] = useState(false);
 
   const handleFileSelect = (file: File) => {
-    // Проверяем тип файла (можно расширить список поддерживаемых форматов)
     const allowedTypes = [
       'application/octet-stream',
       'application/x-pickle',
@@ -34,7 +33,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     );
 
     if (!isValidType && file.size > 0) {
-      // Для демонстрации позволим любые файлы, но в реальном приложении нужна валидация
+      // validation here then
     }
 
     onFileSelect(file);
@@ -135,13 +134,13 @@ export const FileUpload: React.FC<FileUploadProps> = ({
               />
             </svg>
             <p className="text-lg font-medium text-gray-900 mb-2">
-              {dragOver ? 'Отпустите файл здесь' : 'Загрузите файл модели'}
+              {dragOver ? 'Drop file here' : 'Upload model file'}
             </p>
             <p className="text-sm text-gray-500 mb-4">
-              Перетащите файл сюда или нажмите для выбора
+              Drag and drop file here or click to select
             </p>
             <p className="text-xs text-gray-400">
-              Поддерживаемые форматы: .pkl, .pth, .pt, .h5, .pb, .onnx, .joblib, .zip
+              Allowed formats: .pkl, .pth, .pt, .h5, .pb, .onnx, .joblib, .zip
             </p>
           </div>
         </div>
@@ -179,7 +178,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
       {selectedFile && (
         <div className="mt-3 text-xs text-gray-500">
-          <p>✓ Файл готов к загрузке в MinIO</p>
+          <p>✓ File is ready to upload to storage</p>
         </div>
       )}
     </div>
