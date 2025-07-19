@@ -22,6 +22,13 @@
       "when": 1752838209157,
       "tag": "0002_normal_hydra",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1752921419703,
+      "tag": "0003_premium_jamie_braddock",
+      "breakpoints": true
     }
   ]
 }
