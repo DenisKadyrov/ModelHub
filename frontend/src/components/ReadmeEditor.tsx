@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface ReadmeEditorProps {
   value: string;
@@ -48,7 +48,7 @@ export const ReadmeEditor: React.FC<ReadmeEditorProps> = ({
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
-              Редактировать
+              Edit
             </div>
           </button>
           <button
@@ -65,7 +65,7 @@ export const ReadmeEditor: React.FC<ReadmeEditorProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-              Предварительный просмотр
+              Preview
             </div>
           </button>
         </nav>
@@ -82,19 +82,6 @@ export const ReadmeEditor: React.FC<ReadmeEditorProps> = ({
               placeholder="Введите описание в формате Markdown..."
               disabled={disabled}
             />
-            {/* Markdown Hints */}
-            <div className="absolute bottom-0 right-0 p-2">
-              <div className="bg-gray-800 text-white text-xs rounded-lg p-2 opacity-75 max-w-xs">
-                <p className="font-medium mb-1">Подсказки Markdown:</p>
-                <ul className="list-disc pl-4 space-y-1">
-                  <li>`**жирный текст**`</li>
-                  <li>`*курсив*`</li>
-                  <li>```код```</li>
-                  <li>`- элемент списка` или `* элемент списка`</li>
-                  <li>`# Заголовок 1`, `## Заголовок 2` и т.д.</li>
-                </ul>
-              </div>
-            </div>
           </div>
         ) : (
           <div
