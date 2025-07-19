@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, varchar } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { z } from 'zod';
 import { timestamps } from '../column.helpers'
@@ -9,6 +9,7 @@ export const usersTable = pgTable('users', {
   name: varchar('name', { length: 255 }).notNull(),
   passwordHash: varchar('password_hash').notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
+  about: text('about'),
   ...timestamps,
 });
 

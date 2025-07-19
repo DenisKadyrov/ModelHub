@@ -1,4 +1,4 @@
-import { integer, varchar, serial, pgTable } from 'drizzle-orm/pg-core';
+import { integer, varchar, text, serial, pgTable } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { timestamps } from '../column.helpers';
 import { usersTable } from './users';
@@ -10,6 +10,9 @@ export const modelsTable = pgTable('models', {
   path: varchar('path', { length: 1024 }).notNull(),
   description: varchar('description', { length: 600 }).notNull(),
   framework: varchar('framework', { length: 255 }).notNull(),
+  size: integer('size'),
+  readme: text('readme'),
+  tags: text('tags').array().notNull().default([]),
   ...timestamps,
 });
 
