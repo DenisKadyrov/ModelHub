@@ -23,3 +23,14 @@ export interface ProfileData {
   user: User;
   models: Model[];
 }
+
+export interface ModelUploadData {
+  userId?: number,
+  name: string,
+  description: string,
+  readme: string;
+  tags: string[];
+  size: number;
+  framework: string,
+  file: File | null,
+}
