@@ -12,7 +12,6 @@
   "keywords": [],
   "author": "Denis Kadyrov",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
     "@tsconfig/node24": "^24.0.1",
     "@types/cookie-parser": "^1.4.9",
