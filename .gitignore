@@ -8,6 +8,8 @@ test
 postgres_data
 minio_data
 
+dist
+
 # === Rule for dotfiles ===
 # Ignore all dotfiles.
 .*

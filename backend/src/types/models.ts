@@ -6,7 +6,7 @@ export interface Model {
   framework: string;
   path: string;
   tags: string[];
-  readme: string;
+  readme: string | null;
   size: number;
   createdAt: Date;
   updatedAt: Date;

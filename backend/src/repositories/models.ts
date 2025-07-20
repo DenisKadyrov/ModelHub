@@ -8,6 +8,9 @@ export const createModel = async (data: {
   name: string;
   description: string;
   framework: string;
+  readme?: string;
+  size: number;
+  tags?: string[];
   filename: string;
   path: string;
 }): Promise<Model> => {

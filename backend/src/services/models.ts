@@ -37,6 +37,9 @@ export async function uploadModel(data: CreateModelRequest): Promise<ModelRespon
     description: data.description,
     userId: data.userId,
     framework: data.framework,
+    size: data.size,
+    tags: data.tags,
+    readme: data.readme,
     path,
   });
   return toModelResponse(record);
