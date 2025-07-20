@@ -1,11 +1,3 @@
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  createdAt: string;
-}
-
 export interface Model {
   id: string;
   name: string;
@@ -17,11 +9,6 @@ export interface Model {
   fileSize?: number;
   downloadCount?: number;
   readme: string;
-}
-
-export interface ProfileData {
-  user: User;
-  models: Model[];
 }
 
 export interface ModelUploadData {

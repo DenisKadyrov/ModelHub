@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Markdown from 'react-markdown';
-import type { Model, User } from '../types';
+import type { User } from '../types/users';
+import type { Model } from '../types/models';
 
 export const ModelDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,36 +13,11 @@ export const ModelDetails: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fake data for testing
-    const fakeUser: User = {
-      id: 'user-123',
-      name: 'John Doe',
-      email: 'john@example.com',
-      createdAt: new Date().toISOString(),
-    };
+    const model;
+    const user;
 
-    const fakeModel: Model = {
-      id: id || 'model-001',
-      name: 'TextClassifier',
-      description: 'A model for classifying short text into categories.',
-      tags: ['text', 'classification', 'nlp'],
-      userId: 'user-123', // owner is the same as current user
-      createdAt: '2024-07-01T12:00:00Z',
-      updatedAt: '2024-07-10T15:30:00Z',
-      fileSize: 10485760, // 10MB
-      downloadCount: 42,
-      readme: `**Usage**1
-Run the model with: *hello*
-\`\`\`bash
-python run.py --model path/to/model.pt
-\`\`\`
-## Description
-This model classifies text into categories: \`spam\`, \`ham\`, etc.
-      `
-    };
-
-    setModel(fakeModel);
-    setCurrentUser(fakeUser);
+    setModel(model);
+    setCurrentUser(user);
     setLoading(false);
   }, [id]);
 
