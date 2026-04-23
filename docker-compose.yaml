@@ -11,6 +11,11 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U modelhub -d modelhub_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   minio:
     image: minio/minio:latest
@@ -25,7 +30,48 @@ services:
     volumes:
       - minio_data:/data
 
+  backend:
+    build:
+      context: ./backend
+    container_name: modelhub-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      CLIENT_URL: http://localhost:5173
+      DB_URL: postgres://modelhub:modelhubpass@postgres:5432/modelhub_db
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: modelhub_db
+      DB_USER: modelhub
+      DB_PASSWORD: modelhubpass
+      JWT_SECRET: modelhub-docker-secret-change-me
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      BUCKET_NAME: models
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:3000
+    container_name: modelhub-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
 volumes:
   postgres_data:
   minio_data:
-
