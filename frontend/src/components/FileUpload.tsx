@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type ChangeEvent, type DragEvent, type FC } from 'react';
 
 interface FileUploadProps {
   onFileSelect: (file: File | null) => void;
@@ -6,40 +6,38 @@ interface FileUploadProps {
   disabled?: boolean;
 }
 
-export const FileUpload: React.FC<FileUploadProps> = ({
+const MAX_FILE_SIZE = 100 * 1024 * 1024;
+const ALLOWED_EXTENSIONS = ['.pkl', '.pth', '.pt', '.h5', '.pb', '.onnx', '.joblib', '.zip'];
+
+export const FileUpload: FC<FileUploadProps> = ({
   onFileSelect,
   selectedFile,
   disabled = false
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleFileSelect = (file: File) => {
-    const allowedTypes = [
-      'application/octet-stream',
-      'application/x-pickle',
-      'application/zip',
-      '.pkl',
-      '.pth',
-      '.pt',
-      '.h5',
-      '.pb',
-      '.onnx',
-      '.joblib'
-    ];
-
-    const isValidType = allowedTypes.some(type =>
-      file.type === type || file.name.toLowerCase().endsWith(type.replace('application/', '.'))
+    const isValidExtension = ALLOWED_EXTENSIONS.some((extension) =>
+      file.name.toLowerCase().endsWith(extension),
     );
 
-    if (!isValidType && file.size > 0) {
-      // validation here then
+    if (!isValidExtension) {
+      setValidationError(`Unsupported file format. Allowed: ${ALLOWED_EXTENSIONS.join(', ')}`);
+      return;
     }
 
+    if (file.size > MAX_FILE_SIZE) {
+      setValidationError('File is too large. Maximum size is 100 MB.');
+      return;
+    }
+
+    setValidationError(null);
     onFileSelect(file);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragOver(false);
 
@@ -51,7 +49,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!disabled) {
       setDragOver(true);
@@ -68,7 +66,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       handleFileSelect(files[0]);
@@ -76,6 +74,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   const handleRemoveFile = () => {
+    setValidationError(null);
     onFileSelect(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -180,6 +179,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         <div className="mt-3 text-xs text-gray-500">
           <p>✓ File is ready to upload to storage</p>
         </div>
+      )}
+
+      {validationError && (
+        <p className="mt-3 text-sm text-red-600">{validationError}</p>
       )}
     </div>
   );

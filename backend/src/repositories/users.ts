@@ -14,15 +14,26 @@ export async function createUser(data: { name: string; email: string; passwordHa
 
 export async function findUserById(id: number) {
   const result = await db.query.usersTable.findFirst({
+    columns: {
+      id: true,
+      name: true,
+      email: true,
+      createdAt: true,
+    },
     where: eq(usersTable.id, id),
     with: {
       models: {
         columns: {
+          id: true,
+          userId: true,
           name: true,
           description: true,
+          framework: true,
+          readme: true,
           tags: true,
           size: true,
           createdAt: true,
+          updatedAt: true,
         }
       }
     }

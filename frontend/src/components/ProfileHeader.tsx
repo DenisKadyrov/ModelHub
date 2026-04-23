@@ -1,14 +1,12 @@
-import React from 'react';
+import type { FC } from 'react';
 import type { UserData } from '../types/users';
 
 interface ProfileHeaderProps {
   user: UserData;
-  onEditProfile: () => void;
 }
 
-export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
+export const ProfileHeader: FC<ProfileHeaderProps> = ({
   user,
-  onEditProfile,
 }) => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ru-RU', {
@@ -30,24 +28,13 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         </div>
 
         <div className="flex-1 text-center sm:text-left">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2 sm:mb-0">
-              {user.name}
-            </h1>
-            <button
-              onClick={onEditProfile}
-              className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-              Edit Profile
-            </button>
-          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            {user.name}
+          </h1>
 
           <p className="text-gray-600 mb-2">{user.email}</p>
           <p className="text-sm text-gray-500">
-            Register{formatDate(user.createdAt)}
+            Joined {formatDate(user.createdAt)}
           </p>
         </div>
       </div>

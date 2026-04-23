@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModelUploadForm } from '../components/ModelUploadForm.tsx';
 import type { ModelUploadData } from '../types/models';
+import { getApiErrorMessage } from '../api/errors';
 import { createModel } from '../api/models.ts';
 
-export const ModelUpload: React.FC = () => {
+export function ModelUpload() {
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,18 +17,6 @@ export const ModelUpload: React.FC = () => {
       setError(null);
       setUploadProgress(0);
 
-      // Симуляция прогресса загрузки
-      const progressInterval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
-          return prev + 10;
-        });
-      }, 200);
-
-      // add file to form data
       const formData = new FormData();
       if (data.file) {
         formData.append('file', data.file);
@@ -35,19 +24,15 @@ export const ModelUpload: React.FC = () => {
       formData.append('name', data.name);
       formData.append('description', data.description);
       formData.append('framework', data.framework);
+      formData.append('readme', data.readme);
       formData.append('tags', JSON.stringify(data.tags));
-      formData.append('size', data.size.toString());
 
-      await createModel(formData);
+      const model = await createModel(formData, setUploadProgress);
 
       setUploadProgress(100);
-
-      setTimeout(() => {
-        navigate('/profile');
-      }, 1000);
-
+      navigate(`/models/${model.id}`);
     } catch (err) {
-      setError('Не удалось загрузить модель. Попробуйте снова.');
+      setError(getApiErrorMessage(err, 'Не удалось загрузить модель. Попробуйте снова.'));
       console.error('Error uploading model:', err);
     } finally {
       setUploading(false);
@@ -127,4 +112,4 @@ export const ModelUpload: React.FC = () => {
       </div>
     </div>
   );
-};
+}

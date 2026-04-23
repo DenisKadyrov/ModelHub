@@ -1,7 +1,7 @@
 import LoginForm from "../components/LoginForm";
 import FormWrap from "../components/FormWrap";
 
-export default function Register() {
+export default function Login() {
   return (
     <>
       <FormWrap >

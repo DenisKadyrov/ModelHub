@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FC } from 'react';
 
 
 interface ErrorCompProps {
@@ -7,7 +7,7 @@ interface ErrorCompProps {
 
 }
 
-export const ErrorComp: React.FC<ErrorCompProps> = ({ error, onClick }) => {
+export const ErrorComp: FC<ErrorCompProps> = ({ error, onClick }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">

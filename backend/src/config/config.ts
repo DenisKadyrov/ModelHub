@@ -11,6 +11,8 @@ const boolString = z
 // Schema for env variables
 const envSchema = z.object({
   PORT: z.string().default('3000'),
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  CLIENT_URL: z.string().url().default('http://localhost:5173'),
   DB_URL: z.string().url({
     message: 'DB_URL must have valid url',
   }),
@@ -35,6 +37,8 @@ const env = _env.data
 // Typed config object
 export const config = {
   PORT: Number(env.PORT),
+  NODE_ENV: env.NODE_ENV,
+  CLIENT_URL: env.CLIENT_URL,
   DB_URL: env.DB_URL,
   JWT_SECRET: env.JWT_SECRET,
   MINIO_ENDPOINT: env.MINIO_ENDPOINT,

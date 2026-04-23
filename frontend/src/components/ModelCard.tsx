@@ -1,12 +1,12 @@
-import React from 'react';
-import type { Model } from '../types';
+import type { FC } from 'react';
+import type { Model } from '../types/models';
 
 interface ModelCardProps {
   model: Model;
-  onModelClick: (modelId: string) => void;
+  onModelClick: (modelId: number) => void;
 }
 
-export const ModelCard: React.FC<ModelCardProps> = ({ model, onModelClick }) => {
+export const ModelCard: FC<ModelCardProps> = ({ model, onModelClick }) => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ru-RU', {
       year: 'numeric',
@@ -51,7 +51,7 @@ export const ModelCard: React.FC<ModelCardProps> = ({ model, onModelClick }) => 
       </div>
 
       <div className="flex justify-between items-center text-sm text-gray-500">
-        <span>Размер: {formatFileSize(model.fileSize)}</span>
+        <span>Размер: {formatFileSize(model.size)}</span>
         {model.downloadCount && (
           <span>Скачиваний: {model.downloadCount}</span>
         )}

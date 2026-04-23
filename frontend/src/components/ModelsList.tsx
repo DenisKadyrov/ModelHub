@@ -1,14 +1,14 @@
-import React from 'react';
+import type { FC } from 'react';
 import type { Model } from '../types/models';
 import { ModelCard } from './ModelCard';
 
 interface ModelsListProps {
   models: Model[];
-  onModelClick: (modelId: string) => void;
+  onModelClick: (modelId: number) => void;
   onCreateModel: () => void;
 }
 
-export const ModelsList: React.FC<ModelsListProps> = ({
+export const ModelsList: FC<ModelsListProps> = ({
   models,
   onModelClick,
   onCreateModel

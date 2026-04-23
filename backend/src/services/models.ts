@@ -8,10 +8,12 @@ import {
 } from '../repositories/models';
 import {
   CreateModelRequest,
+  Model,
   ModelResponse,
   ModelsListResponse
 } from '../types/models';
 import { v4 as uuidv4 } from 'uuid';
+import { AppError } from '../utils/errors';
 
 export async function uploadModel(data: CreateModelRequest): Promise<ModelResponse> {
   const extension = data.file.originalname.split('.').pop();
@@ -33,17 +35,16 @@ export async function uploadModel(data: CreateModelRequest): Promise<ModelRespon
   // Save metadata to DB
   const record = await createModel({
     name: data.name,
-    filename: filename,
     description: data.description,
     userId: data.userId,
     framework: data.framework,
-    size: data.size,
+    size: data.file.size,
     tags: data.tags,
     readme: data.readme,
     path,
   });
   return toModelResponse(record);
-};
+}
 
 export async function getAllModels(): Promise<ModelsListResponse> {
   const models = await getListOfModels();
@@ -57,8 +58,17 @@ export async function getModelById(id: number): Promise<ModelResponse> {
   return toModelResponse(model);
 }
 
-export async function deleteModelById(id: number): Promise<{ message: string }> {
+export async function getModelDownloadUrl(id: number): Promise<string> {
   const model = await getOneModel(id);
+  return minioClient.presignedGetObject(config.MINIO_BUCKET_NAME, model.path, 60 * 60);
+}
+
+export async function deleteModelById(id: number, requesterId: number): Promise<{ message: string }> {
+  const model = await getOneModel(id);
+
+  if (model.userId !== requesterId) {
+    throw new AppError('You can delete only your own models', 403);
+  }
 
   await deleteOneModel(id);
 
@@ -73,10 +83,7 @@ export async function deleteModelById(id: number): Promise<{ message: string }> 
   return { message: 'Model deleted successfully' };
 }
 
-
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function toModelResponse(model: any): ModelResponse {
+function toModelResponse(model: Model): ModelResponse {
   return {
     id: model.id,
     userId: model.userId,
@@ -86,7 +93,7 @@ function toModelResponse(model: any): ModelResponse {
     path: model.path,
     size: model.size,
     tags: model.tags,
-    readme: model.readme,
+    readme: model.readme ?? '',
     createdAt: model.createdAt.toISOString(),
     updatedAt: model.updatedAt.toISOString()
   };

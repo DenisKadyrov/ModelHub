@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type FC, type FormEvent } from 'react';
 
 import { FileUpload } from './FileUpload.tsx';
 import { ReadmeEditor } from './ReadmeEditor.tsx';
@@ -6,12 +6,12 @@ import type { ModelUploadData } from '../types/models.ts';
 
 
 interface ModelUploadFormProps {
-  onSubmit: (data: ModelUploadData) => void;
+  onSubmit: (data: ModelUploadData) => void | Promise<void>;
   onCancel: () => void;
   disabled?: boolean;
 }
 
-export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
+export const ModelUploadForm: FC<ModelUploadFormProps> = ({
   onSubmit,
   onCancel,
   disabled = false,
@@ -19,20 +19,18 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
   const [formData, setFormData] = useState<ModelUploadData>({
     name: '',
     description: '',
-    framework: "hi",
+    framework: 'pytorch',
     readme: '# Model Name\n\n## Description\n\nDescribe your model here...\n\n## Usage\n\n```python\n# Example usage\n```\n\n## Requirements\n\n- Python 3.8+\n- PyTorch\n\n## License\n\nMIT',
     file: null,
     tags: [],
-    size: 2,
   });
 
   const [currentTag, setCurrentTag] = useState('');
 
-  const handleInputChange = (field: keyof ModelUploadData, value: any) => {
+  const handleInputChange = <K extends keyof ModelUploadData>(field: K, value: ModelUploadData[K]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value,
-      updatedAt: new Date().toISOString().split('T')[0]
     }));
   };
 
@@ -53,13 +51,18 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     onSubmit(formData);
   };
 
-  const isValid = formData.name.trim() && formData.description.trim() && formData.file;
+  const isValid = Boolean(
+    formData.name.trim()
+    && formData.description.trim()
+    && formData.framework.trim()
+    && formData.file,
+  );
 
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-6">
@@ -100,6 +103,26 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
               disabled={disabled}
               required
             />
+          </div>
+
+          <div>
+            <label htmlFor="framework" className="block text-sm font-medium text-gray-700 mb-2">
+              Framework *
+            </label>
+            <select
+              id="framework"
+              value={formData.framework}
+              onChange={(e) => handleInputChange('framework', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              disabled={disabled}
+              required
+            >
+              <option value="pytorch">PyTorch</option>
+              <option value="tensorflow">TensorFlow</option>
+              <option value="onnx">ONNX</option>
+              <option value="scikit-learn">Scikit-learn</option>
+              <option value="other">Other</option>
+            </select>
           </div>
 
           {/* Tags */}
@@ -151,7 +174,7 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
 
       {/* File Upload */}
       <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Файл модели</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Model File</h2>
         <FileUpload
           onFileSelect={(file) => handleInputChange('file', file)}
           selectedFile={formData.file}
@@ -177,14 +200,14 @@ export const ModelUploadForm: React.FC<ModelUploadFormProps> = ({
           className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
           disabled={disabled}
         >
-          Cancal
+          Cancel
         </button>
         <button
           type="submit"
           className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           disabled={disabled || !isValid}
         >
-          {disabled ? 'Loading...' : 'Load of model'}
+          {disabled ? 'Uploading...' : 'Upload model'}
         </button>
       </div>
     </form>

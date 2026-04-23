@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, type FC } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface ReadmeEditorProps {
   value: string;
@@ -6,29 +7,12 @@ interface ReadmeEditorProps {
   disabled?: boolean;
 }
 
-export const ReadmeEditor: React.FC<ReadmeEditorProps> = ({
+export const ReadmeEditor: FC<ReadmeEditorProps> = ({
   value,
   onChange,
   disabled = false
 }) => {
   const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
-
-  // Простой рендерер Markdown для предварительного просмотра
-  const renderMarkdown = (markdown: string) => {
-    return markdown
-      .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold mb-4">$1</h1>')
-      .replace(/^## (.*$)/gm, '<h2 class="text-xl font-semibold mb-3">$1</h2>')
-      .replace(/^### (.*$)/gm, '<h3 class="text-lg font-medium mb-2">$1</h3>')
-      .replace(/^\* (.*$)/gm, '<li class="ml-4">$1</li>')
-      .replace(/^- (.*$)/gm, '<li class="ml-4">$1</li>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">$1</code>')
-      .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre class="bg-gray-100 p-4 rounded-md overflow-x-auto"><code>$2</code></pre>')
-      .replace(/\n\n/g, '</p><p class="mb-4">')
-      .replace(/^(?!<[hlu]|<pre|<p)/gm, '<p class="mb-4">')
-      .replace(/<\/p><p class="mb-4">$/, '</p>');
-  };
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden">
@@ -84,12 +68,11 @@ export const ReadmeEditor: React.FC<ReadmeEditorProps> = ({
             />
           </div>
         ) : (
-          <div
-            className="p-4 prose prose-sm max-w-none"
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(value) }}
-          />
+          <div className="p-4 prose prose-sm max-w-none">
+            <ReactMarkdown>{value}</ReactMarkdown>
+          </div>
         )}
       </div>
-    </div >
+    </div>
   );
 };

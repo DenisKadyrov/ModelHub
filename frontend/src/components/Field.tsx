@@ -1,3 +1,5 @@
+import type { FC } from 'react';
+
 interface FieldProps {
   label: string;
   name: string;
@@ -5,7 +7,7 @@ interface FieldProps {
   autoComplete?: string;
   onChange: (value: string) => void;
 }
-const Field: React.FC<FieldProps> = ({ label, name, type, autoComplete, onChange }) => {
+const Field: FC<FieldProps> = ({ label, name, type, autoComplete, onChange }) => {
   return (
     <>
       <div>
@@ -28,4 +30,4 @@ const Field: React.FC<FieldProps> = ({ label, name, type, autoComplete, onChange
   );
 }
 
-export default Field; 
+export default Field;

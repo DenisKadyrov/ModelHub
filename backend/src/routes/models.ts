@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { upload } from '../middlewares/upload';
 import { authenticate } from '../middlewares/authenticate';
-import { handleModelUpload, getModels, getModel, deleteModel } from '../controllers/models';
+import { handleModelUpload, getModels, getModel, deleteModel, downloadModel } from '../controllers/models';
 
 export const router = Router();
 
@@ -87,6 +87,7 @@ router.get('/', getModels);
  *         description: Missing or invalid fields
  */
 router.get('/:id', getModel);
+router.get('/:id/download', downloadModel);
 
 /**
  * @openapi
@@ -109,4 +110,4 @@ router.get('/:id', getModel);
  *       '400':
  *         description: Missing or invalid fields
  */
-router.delete('/:id', deleteModel);
+router.delete('/:id', authenticate, deleteModel);

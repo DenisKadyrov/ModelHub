@@ -1,19 +1,20 @@
-import { Routes, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Register from '../pages/Register';
 import Login from '../pages/Login';
 import { Profile } from '../pages/Profile';
-// import { ModelDetails } from '../pages/ModelDetails';
+import { ModelDetails } from '../pages/ModelDetails';
 import { ModelUpload } from '../pages/UploadModel';
 
 export default function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/register" element={<Register />} />
       <Route path='/login' element={<Login />} />
-      <Route path="*" element={<Login />} />
       <Route path='/profile' element={<Profile />} />
-      {/* <Route path="/models/:id" element={<ModelDetails />} /> */}
+      <Route path="/models/:id" element={<ModelDetails />} />
       <Route path='/model/create' element={<ModelUpload />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

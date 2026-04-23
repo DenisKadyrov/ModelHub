@@ -1,13 +1,15 @@
+import type { Model } from './models';
+
 export interface UserData {
-  id: string;
+  id: number;
   name: string;
   email: string;
-  models: [];
+  models: Model[];
   createdAt: string;
 }
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   createdAt: string;

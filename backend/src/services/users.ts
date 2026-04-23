@@ -5,7 +5,7 @@ import { findUserByEmail, createUser, findUserById } from '../repositories/users
 import { signToken } from '../utils/jwt';
 
 export interface UserPayload {
-  id: string;
+  id: number;
   name: string;
   email: string;
 }
@@ -47,5 +47,6 @@ export async function loginUser(data: {
 
 export async function getUserInfo(id: number) {
   const user = await findUserById(id);
+  if (!user) throw new AppError('User not found', 404);
   return user;
 }

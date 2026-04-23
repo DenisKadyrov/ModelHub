@@ -12,15 +12,22 @@ export interface Model {
   updatedAt: Date;
 }
 
+export interface UploadedFile {
+  buffer: Buffer;
+  fieldname: string;
+  mimetype: string;
+  originalname: string;
+  size: number;
+}
+
 export interface CreateModelRequest {
   userId: number,
   name: string,
   description: string,
   readme: string;
   tags: string[];
-  size: number;
   framework: string,
-  file: Express.Multer.File,
+  file: UploadedFile,
 }
 
 export interface ModelResponse {
@@ -40,4 +47,3 @@ export interface ModelResponse {
 export interface ModelsListResponse {
   models: ModelResponse[];
 }
-

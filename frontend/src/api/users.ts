@@ -1,4 +1,5 @@
 import api from './axios';
+import type { UserData } from '../types/users';
 
 interface RegisterData {
   email: string;
@@ -34,7 +35,7 @@ export const login = async (data: LoginData): Promise<LoginResponse> => {
   return response.data;
 };
 
-export const me = async () => {
-  const response = await api.get('/users/me',);
+export const me = async (): Promise<UserData> => {
+  const response = await api.get<{ userInfo: UserData }>('/users/me');
   return response.data.userInfo;
-}
+};

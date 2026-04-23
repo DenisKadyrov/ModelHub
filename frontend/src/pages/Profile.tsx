@@ -8,16 +8,17 @@ import { ErrorComp } from '../components/ErrorComp';
 
 import type { UserData } from '../types/users';
 
+import { getApiErrorMessage } from '../api/errors';
 import { me } from '../api/users';
 
-export const Profile: React.FC = () => {
+export function Profile() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadProfileData();
+    void loadProfileData();
   }, []);
 
   const loadProfileData = async () => {
@@ -29,19 +30,15 @@ export const Profile: React.FC = () => {
 
       setUserData(profileData);
     } catch (err) {
-      setError('Не удалось загрузить данные профиля');
+      setError(getApiErrorMessage(err, 'Не удалось загрузить данные профиля'));
       console.error('Error loading profile:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleModelClick = (modelId: string) => {
+  const handleModelClick = (modelId: number) => {
     navigate(`/models/${modelId}`);
-  };
-
-  const handleEditProfile = () => {
-    navigate('/profile/edit');
   };
 
   const handleCreateModel = () => {
@@ -63,10 +60,7 @@ export const Profile: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ProfileHeader
-          user={userData}
-          onEditProfile={handleEditProfile}
-        />
+        <ProfileHeader user={userData} />
 
         <ModelsList
           models={userData.models}
@@ -76,4 +70,4 @@ export const Profile: React.FC = () => {
       </div>
     </div>
   );
-};
+}
